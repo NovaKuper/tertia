@@ -21,30 +21,27 @@ function read_data_file($filename)
     }
 }
 
-if (!function_exists("array_key_last")) {
-    /**
-     * Возвращает индекс последнего элемента
-     * @param $data array Массив данных
-     * @return int|NULL Индекс последнего элемента
-     */
-    function array_key_last($data)
-    {
-        if (!is_array($data) || empty($data)) {
-            return null;
-        }
-        return array_keys($data)[count($data) - 1];
-    }
-}
-
 /**
- *
- * @param $key integer Ключ массива
+ * Кастомная функция сортировки многомерного массива
+ * @param $key integer по этому полю сортировать
  * @return
  */
-function build_sorter($key)
+function build_sorter_ASC($key)
 {
     return function ($a, $b) use ($key) {
-        return strnatcmp($a[$key], $b[$key]);
+        if (is_numeric($b[$key]) && is_numeric($a[$key]))
+            return ($a[$key] - $b[$key]);
+        else
+            return strcasecmp ($a[$key], $b[$key]);
+    };
+}
+function build_sorter_DESC($key)
+{
+    return function ($a, $b) use ($key) {
+        if (is_numeric($b[$key]) && is_numeric($a[$key]))
+            return ($b[$key]-$a[$key]);
+        else
+            return strcasecmp ($b[$key], $a[$key]);
     };
 }
 

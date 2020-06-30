@@ -13,38 +13,41 @@
 </head>
 <body>
 <div class="container">
-    <div class="row mt-3 ">
-        <form class="mx-auto" id="add_form">
-            <div class="form-group">
-                <input type="text" class="form-control" id="prod" name="prod" placeholder="Производитель" required>
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" id="name" name="name" placeholder="Наименование" required>
-            </div>
-            <div class="form-group">
-                <input type="number" class="form-control" id="price" name="price" placeholder="Цена" required>
-            </div>
-            <div class="form-group">
-                <input type="number" class="form-control" id="amt" name="amt" placeholder="Количество" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Добавить</button>
-        </form>
-    </div>
     <div class="row mt-3">
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th scope="col" col_id="0" nav="asc">#id</th>
-                <th scope="col" col_id="1" nav="asc">Производитель</th>
-                <th scope="col" col_id="2" nav="asc">Наименование</th>
-                <th scope="col" col_id="3" nav="asc">Цена</th>
-                <th scope="col" col_id="4" nav="asc">Количество</th>
-            </tr>
-            </thead>
-            <tbody id="table_cont">
+        <div class="col-lg-3 col-12 mb-3">
+            <h2>Форма</h2>
+            <form class="mx-auto" id="add_form">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="prod" name="prod" placeholder="Производитель" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Наименование" required>
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" id="price" name="price" placeholder="Цена" min="0" required>
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" id="amt" name="amt" placeholder="Количество" min="0" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Добавить</button>
+            </form>
+        </div>
+        <div class="col-lg-9 col-12 ">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col" col_id="0" nav="">#id</th>
+                    <th scope="col" col_id="1" nav="">Производитель</th>
+                    <th scope="col" col_id="2" nav="">Наименование</th>
+                    <th scope="col" col_id="3" nav="">Цена</th>
+                    <th scope="col" col_id="4" nav="">Количество</th>
+                </tr>
+                </thead>
+                <tbody id="table_cont">
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <div id="float_notice">

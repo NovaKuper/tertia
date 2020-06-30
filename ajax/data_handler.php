@@ -8,7 +8,12 @@ switch ($action) {
     case 'sort':
         $data = read_data_file($filename);
         $col_id = intval($_REQUEST['col_id']);
-        usort($data, build_sorter($col_id));
+        $sort_nav = (isset($_REQUEST['nav'])) ? $_REQUEST['nav'] : '';
+        if ($sort_nav == 'DESC') {
+            usort($data, build_sorter_DESC($col_id));
+        } elseif  ($sort_nav == 'ASC'){
+            usort($data, build_sorter_ASC($col_id));
+        }
         echo print_data_table($data);
         break;
     case 'notice':

@@ -16,11 +16,25 @@ $(document).ready(function () {
     });
 
     $('table thead th').click(function () {
+        var $this = $(this),
+            nav = $this.attr('nav');
+
+        $('thead th').attr('nav', '');
+        if (nav == 'ASC'){
+            nav = 'DESC';
+            $this.attr('nav', 'DESC');
+        } else if (nav == 'DESC') {
+            nav = '';
+            $this.attr('nav', '');
+        } else {
+            nav = 'ASC';
+            $this.attr('nav', 'ASC');
+        }
+
         $.ajax({
             type: 'GET',
-            url: '/ajax/data_handler.php?action=sort&col_id=' + $(this).attr('col_id'),
-            success: function(data){
-                console.log(data);
+            url: '/ajax/data_handler.php?action=sort&col_id=' + $this.attr('col_id') + '&nav=' + nav,
+            success: function (data) {
                 $('#table_cont').html(data);
             }
         });
