@@ -29,19 +29,22 @@ function read_data_file($filename)
 function build_sorter_ASC($key)
 {
     return function ($a, $b) use ($key) {
-        if (is_numeric($b[$key]) && is_numeric($a[$key]))
-            return ($a[$key] - $b[$key]);
-        else
-            return strcasecmp ($a[$key], $b[$key]);
+        if (is_numeric($b[$key]) && is_numeric($a[$key])) {
+            return (($a[$key]+ 0) - ($b[$key]+ 0));
+        } else {
+            return strcasecmp($a[$key], $b[$key]);
+        }
     };
 }
+
 function build_sorter_DESC($key)
 {
     return function ($a, $b) use ($key) {
-        if (is_numeric($b[$key]) && is_numeric($a[$key]))
-            return ($b[$key]-$a[$key]);
-        else
-            return strcasecmp ($b[$key], $a[$key]);
+        if (is_numeric($b[$key]) && is_numeric($a[$key])) {
+            return (($b[$key]+ 0) - ($a[$key]+ 0));
+        } else {
+            return strcasecmp($b[$key], $a[$key]);
+        }
     };
 }
 
