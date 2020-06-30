@@ -1,30 +1,56 @@
 <?php
 require_once("../functions.php");
 
-print_r($_REQUEST);
-
 $action = (isset($_REQUEST['action'])) ? $_REQUEST["action"] : '';
 $filename = '../data.txt';
-echo $action;
-$prod = trim($_REQUEST['prod']);
-$name = trim($_REQUEST['name']);
-$price = trim($_REQUEST['price']);
-$amt = trim($_REQUEST['amt']);
 
 switch ($action) {
     case 'sort':
-        echo "i равно 0";
+        $data = read_data_file($filename);
+        $col_id = trim($_REQUEST['col_id']);
         break;
     case 'add':
-        $data = read_data_file($filename);
-        $row_amt = $data[array_key_last($data)][0] + 1;
-        $new_str = $row_amt . ' :: ' . $prod . ' :: ' . $name . ' :: ' . $price . ' :: ' . $amt;
-        file_put_contents($filename, PHP_EOL . $new_str, FILE_APPEND);
-        $data[] = array($row_amt, $prod, $name, $price, $amt);
-        echo print_data_table($data);
+        if (isset($_REQUEST['prod']) && isset($_REQUEST['name']) && isset($_REQUEST['price']) && isset($_REQUEST['amt'])) {
+            $prod = htmlspecialchars(trim($_REQUEST['prod']));
+            $name = htmlspecialchars(trim($_REQUEST['name']));
+            $price = floatval($_REQUEST['price']);
+            $amt = intval($_REQUEST['amt']);
+
+            $data = read_data_file($filename);
+            $id = $data[array_key_last($data)][0] + 1;
+            $new_str = $id . ' :: ' . $prod . ' :: ' . $name . ' :: ' . $price . ' :: ' . $amt;
+            if (empty($data)) {
+                file_put_contents($filename, $new_str);
+            } else {
+                file_put_contents($filename, PHP_EOL . $new_str, FILE_APPEND);
+            }
+            $data[] = array($id, $prod, $name, $price, $amt);
+            echo print_data_table($data);
+        } else {
+            echo "ERROR";
+        }
         break;
     case 'del':
-        echo "i равно 2";
+        if (isset($_REQUEST['row_id'])) {
+            $data = read_data_file($filename);
+            file_put_contents($filename, '');
+            $key = array_search($_REQUEST['row_id'], array_column($data, 0));
+            unset($data[$key]);
+            foreach ($data as $row) {
+                $str = '';
+                foreach ($row as $index => $col) {
+                    if ($index == 0) {
+                        $str .= $col;
+                    } else {
+                        $str .= ' :: ' . $col;
+                    }
+                }
+                file_put_contents($filename, $str, FILE_APPEND);
+            }
+            echo print_data_table($data);
+        } else {
+            echo "ERROR";
+        }
         break;
     default:
         $data = read_data_file($filename);

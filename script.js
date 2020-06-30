@@ -8,20 +8,10 @@ $(document).ready(function () {
             url: "/ajax/data_handler.php?action=add",
             data: $(this).serialize(),
             success: function(data){
-
+                $('#add_form')[0].reset();
                 $('#table_cont').html(data);
-                console.log(data);
             }
         });
         return false;
     });
-
-//     $('tr:has(input)').each(function () {
-//
-// // var a= this.find('input').eq(0)).val();
-//
-//         var $(this).find("input:eq(1)").val();
-//         console.log(a);
-//
-//     });
 });
