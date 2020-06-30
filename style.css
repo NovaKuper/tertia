@@ -1,0 +1,15 @@
+#float_notice {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 250px;
+    background: #FFF;
+    opacity: 0.85;
+    border: 1px solid #000;
+    font-size: 12px;
+}
+#float_notice .cont {
+    position: relative;
+    margin: 5px 10px;
+}

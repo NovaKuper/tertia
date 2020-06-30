@@ -7,7 +7,13 @@ $filename = '../data.txt';
 switch ($action) {
     case 'sort':
         $data = read_data_file($filename);
-        $col_id = trim($_REQUEST['col_id']);
+        $col_id = intval($_REQUEST['col_id']);
+        usort($data, build_sorter($col_id));
+        echo print_data_table($data);
+        break;
+    case 'notice':
+        $row_id = intval($_REQUEST['row_id']);
+        echo print_notice($filename, $row_id);
         break;
     case 'add':
         if (isset($_REQUEST['prod']) && isset($_REQUEST['name']) && isset($_REQUEST['price']) && isset($_REQUEST['amt'])) {
@@ -17,14 +23,13 @@ switch ($action) {
             $amt = intval($_REQUEST['amt']);
 
             $data = read_data_file($filename);
-            $id = $data[array_key_last($data)][0] + 1;
-            $new_str = $id . ' :: ' . $prod . ' :: ' . $name . ' :: ' . $price . ' :: ' . $amt;
-            if (empty($data)) {
-                file_put_contents($filename, $new_str);
-            } else {
-                file_put_contents($filename, PHP_EOL . $new_str, FILE_APPEND);
-            }
-            $data[] = array($id, $prod, $name, $price, $amt);
+            $all_ids = array_column($data, 0);
+            $new_id = max($all_ids) + 1;
+            $new_str = $new_id . ' :: ' . $prod . ' :: ' . $name . ' :: ' . $price . ' :: ' . $amt;
+
+            file_put_contents($filename, PHP_EOL . $new_str, FILE_APPEND);
+
+            $data[] = array($new_id, $prod, $name, $price, $amt);
             echo print_data_table($data);
         } else {
             echo "ERROR";
@@ -36,16 +41,20 @@ switch ($action) {
             file_put_contents($filename, '');
             $key = array_search($_REQUEST['row_id'], array_column($data, 0));
             unset($data[$key]);
-            foreach ($data as $row) {
+            foreach ($data as $i_row => $row) {
                 $str = '';
-                foreach ($row as $index => $col) {
-                    if ($index == 0) {
+                foreach ($row as $i_col => $col) {
+                    if ($i_col == 0) {
                         $str .= $col;
                     } else {
                         $str .= ' :: ' . $col;
                     }
                 }
-                file_put_contents($filename, $str, FILE_APPEND);
+                if ($i_row == 0) {
+                    file_put_contents($filename, $str);
+                } else {
+                    file_put_contents($filename, $str, FILE_APPEND);
+                }
             }
             echo print_data_table($data);
         } else {
